@@ -1,10 +1,12 @@
-import "./styles.css";
+import Header from "./components/Header";
+import Main from "./components/Main";
+// import "./styles.css";
 
 export default function App() {
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
+    <div className="app">
+      <Header />
+      <Main />
     </div>
   );
 }
