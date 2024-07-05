@@ -2,7 +2,10 @@ import {useEffect, useReducer} from 'react';
 
 import Header from "./components/Header";
 import Main from "./components/Main";
-// import "./styles.css";
+import Loader from './components/Loader'
+import Error from './components/Error'
+import StartScreen from './components/StartScreen'
+import Questions from './components/Questions'
 
 const initialState = {
   questions: [],
@@ -11,11 +14,33 @@ const initialState = {
 }
 
 const reducer = (state, action) => {
-  
+  switch(action.type){
+    case "dataReceived":
+      return {
+        ...state,
+        questions: action.payload,
+        status: "ready",
+      }
+     case "dataFailed":
+       return {
+         ...state,
+         status: "error",
+       }
+     case "start":
+       return {
+         ...state,
+         status: "active"
+       }
+      default: 
+      {
+        throw new Error("Uknown error");
+      }
+  }
 }
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [{questions, status}, dispatch] = useReducer(reducer, initialState);
+  const numQuestions = questions.length;
   
   useEffect(() => {
     console.log("Fetching");
@@ -24,9 +49,9 @@ export default function App() {
       try{
         const res = await fetch('https://82f5jm-8000.csb.app/questions');
         const data = await res.json();
-        console.log("questions: ", data);
+         dispatch({type: "dataReceived", payload: data});
       } catch(e) {
-        console.log("error: ", e);
+        dispatch({type: "dataFailed"});
       }
     }
     
@@ -36,7 +61,15 @@ export default function App() {
   return (
     <div className="app">
       <Header />
-      <Main />
+      <Main>
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" 
+        && <StartScreen numQuestions={numQuestions} 
+        dispatch={dispatch}
+        />}
+        {status === "active" && <Questions questions={questions}/>}
+      </Main>
     </div>
   );
 }
