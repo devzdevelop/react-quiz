@@ -1,7 +1,11 @@
-export default function Questions({questions}) {
+import Options from "./Options";
+
+export default function Questions({questions, index, dispatch, answer}) {
+  console.log(questions);
   return (
     <div>
-      <p>Questions</p>
+      <h4>{questions.question}</h4>
+      <Options questions={questions} dispatch={dispatch} answer={answer}/>
     </div>
   )
 }
