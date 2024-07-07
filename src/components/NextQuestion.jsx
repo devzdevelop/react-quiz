@@ -1,28 +1,32 @@
-import React from 'react'
+import React from 'react';
 
-export default function NextQuestion({dispatch, answer, index, numQuestions}) {
-    if (answer === null) return null; 
+export default function NextQuestion({
+  dispatch,
+  answer,
+  index,
+  numQuestions,
+}) {
+  if (answer === null) return null;
 
-    if (index < numQuestions - 1) {
-        return (
-            <button 
-            className='btn btn-ui' 
-            onClick={() => dispatch({type: 'nextQuestion'})}
-            >
-                Next Question
-            </button>
-        )
-    }
+  if (index < numQuestions - 1) {
+    return (
+      <button
+        className='btn btn-ui'
+        onClick={() => dispatch({ type: 'nextQuestion' })}
+      >
+        Next Question
+      </button>
+    );
+  }
 
-    if (index === numQuestions - 1) {
-        return (
-            <button 
-            className='btn btn-ui' 
-            onClick={() => dispatch({type: 'finished'})}
-            >
-                Finish
-            </button>
-        )
-    }
-    
+  if (index === numQuestions - 1) {
+    return (
+      <button
+        className='btn btn-ui'
+        onClick={() => dispatch({ type: 'finished' })}
+      >
+        Finish
+      </button>
+    );
+  }
 }
