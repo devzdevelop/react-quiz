@@ -16,23 +16,6 @@ import { useQuiz } from '../context/QuizContext';
 export default function App() {
   const { questions, status, index, numQuestions, dispatch } = useQuiz();
 
-  // fetching questions
-  console.log('Status: ', status);
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const res = await fetch('https://82f5jm-8000.csb.app/questions');
-        const data = await res.json();
-
-        dispatch({ type: 'dataReceived', payload: data });
-      } catch (e) {
-        dispatch({ type: 'dataFailed' });
-      }
-    };
-
-    fetchQuestions();
-  }, []);
-
   return (
     <div className='app'>
       <Header />

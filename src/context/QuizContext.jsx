@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 const QuizContext = createContext();
 
@@ -87,6 +87,23 @@ export default function QuizProvider({ children }) {
     (prev, cur) => prev + cur.points,
     0,
   );
+  
+  // fetching questions
+  console.log('Status: ', status);
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await fetch('https://82f5jm-8000.csb.app/questions');
+        const data = await res.json();
+
+        dispatch({ type: 'dataReceived', payload: data });
+      } catch (e) {
+        dispatch({ type: 'dataFailed' });
+      }
+    };
+
+    fetchQuestions();
+  }, []);
 
   return (
     <QuizContext.Provider
